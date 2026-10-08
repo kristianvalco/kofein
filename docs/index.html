@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kofein – keep your Mac awake</title>
+<meta name="description" content="Kofein is a tiny macOS menu bar app that keeps your Mac awake and the display on. Free.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta property="og:title" content="Kofein – keep your Mac awake">
+<meta property="og:description" content="A tiny menu bar app that stops your Mac from sleeping. One click. Free.">
+<meta property="og:image" content="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f1e8;
+    --surface: #fffaf3;
+    --text: #2e1b14;
+    --muted: #6f5a4e;
+    --line: #e7dccd;
+    --accent: #e3803a;
+    --accent-ink: #fff;
+    --code-bg: #efe5d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1411;
+      --surface: #261c18;
+      --text: #f4ebe0;
+      --muted: #b8a597;
+      --line: #3a2c25;
+      --accent: #ee9150;
+      --accent-ink: #1c1411;
+      --code-bg: #2f231e;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  header { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; }
+  .brand img { width: 32px; height: 32px; }
+  .nav { display: flex; align-items: center; gap: 14px; font-size: 15px; }
+  .nav a { color: var(--muted); text-decoration: none; }
+  .nav a:hover { color: var(--text); }
+  .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+  .lang button {
+    border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px; font-weight: 600;
+    padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+
+  .hero > *, ol.steps li > div, .note { min-width: 0; }
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; padding: 48px 0 72px; }
+  h1, h2 { font-family: Fraunces, Georgia, serif; font-weight: 700; letter-spacing: -0.01em; line-height: 1.1; }
+  h1 { font-size: clamp(40px, 6vw, 60px); margin: 0 0 18px; }
+  .lead { font-size: 19px; color: var(--muted); margin: 0 0 28px; max-width: 34ch; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 600;
+    padding: 14px 22px; border-radius: 12px; box-shadow: 0 6px 20px -8px rgba(227, 128, 58, .7);
+    transition: transform .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn svg { width: 20px; height: 20px; }
+  .meta { margin: 14px 0 0; font-size: 14px; color: var(--muted); }
+  .shot {
+    justify-self: center; width: 100%; max-width: 380px; border-radius: 14px;
+    background: #fff; box-shadow: 0 30px 60px -25px rgba(46, 27, 20, .45), 0 0 0 1px rgba(46, 27, 20, .08);
+  }
+
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 32px; margin: 0 0 28px; }
+  .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .feature { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .feature .ico { font-size: 22px; }
+  .feature h3 { font-size: 16px; margin: 8px 0 6px; }
+  .feature p { margin: 0; font-size: 15px; color: var(--muted); }
+
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 16px; max-width: 680px; }
+  ol.steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 14px; }
+  ol.steps li::before {
+    content: counter(s); width: 32px; height: 32px; border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700; font-size: 15px;
+    background: var(--surface); border: 1px solid var(--line);
+  }
+  ol.steps p { margin: 4px 0 0; }
+  .note { margin-top: 28px; max-width: 680px; font-size: 15px; color: var(--muted); }
+  code {
+    display: block; margin-top: 8px; padding: 12px 14px; border-radius: 10px; overflow-x: auto;
+    background: var(--code-bg); color: var(--text); font: 14px/1.4 ui-monospace, Menlo, monospace; white-space: pre;
+  }
+
+  footer { padding: 32px 0 48px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 800px) {
+    .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 24px; }
+    .features { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .features { grid-template-columns: 1fr; }
+    .nav .gh { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="./"><img src="icon.png" alt="">Kofein</a>
+    <nav class="nav">
+      <a class="gh" href="https://github.com/kristianvalco/kofein">GitHub</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="sk">SK</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <h1 data-i18n="title">Keep your Mac awake.</h1>
+        <p class="lead" data-i18n="lead">A tiny menu bar app that stops your Mac from sleeping and the display from turning off. One click, nothing else.</p>
+        <a class="btn" href="https://github.com/kristianvalco/kofein/releases/latest/download/Kofein.zip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
+          <span data-i18n="download">Download for Mac</span>
+        </a>
+        <p class="meta" data-i18n="meta">Free · macOS 13 Ventura or later · Apple Silicon &amp; Intel</p>
+      </div>
+      <img class="shot" src="popup.png" width="680" height="546" alt="Kofein menu bar panel">
+    </div>
+
+    <section>
+      <h2 data-i18n="featuresTitle">Small, but enough</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="ico">☕</div>
+          <h3 data-i18n="f1t">One click</h3>
+          <p data-i18n="f1p">Left-click the cup for the panel, right-click to switch on or off instantly.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">⏱</div>
+          <h3 data-i18n="f2t">Auto-off timer</h3>
+          <p data-i18n="f2p">Turn off after 30 min, 1, 2 or 4 hours – or never.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">↻</div>
+          <h3 data-i18n="f3t">Launch at login</h3>
+          <p data-i18n="f3p">Starts with your Mac and remembers whether it was on.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">🔒</div>
+          <h3 data-i18n="f4t">Nothing extra</h3>
+          <p data-i18n="f4p">Uses the built-in macOS <i>caffeinate</i>. No tracking, no internet, no Dock icon.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <h2 data-i18n="installTitle">Install</h2>
+      <ol class="steps">
+        <li><div><strong data-i18n="s1t">Download and unzip</strong><p data-i18n="s1p">Download Kofein.zip and double-click it.</p></div></li>
+        <li><div><strong data-i18n="s2t">Move to Applications</strong><p data-i18n="s2p">Drag Kofein.app into the Applications folder and open it.</p></div></li>
+        <li><div><strong data-i18n="s3t">Allow it once</strong><p data-i18n="s3p">Kofein isn't signed with a paid Apple certificate, so macOS will block the first launch. Open System Settings → Privacy &amp; Security, scroll down and click “Open Anyway”.</p></div></li>
+      </ol>
+      <p class="note"><span data-i18n="terminal">Prefer Terminal? This does the same as step 3:</span>
+        <code>xattr -dr com.apple.quarantine /Applications/Kofein.app</code>
+      </p>
+      <p class="note" data-i18n="uiLang">Note: the app's interface is currently in Slovak.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span data-i18n="footer">Made in Slovakia by</span> <a href="https://github.com/kristianvalco">Kristián Valčo</a> ·
+    <a href="https://github.com/kristianvalco/kofein" data-i18n="source">Source code</a>
+  </footer>
+</div>
+
+<script>
+  const sk = {
+    title: "Mac, ktorý nezaspí.",
+    lead: "Malá appka v menu bare, ktorá nedovolí Macu zaspať a displeju zhasnúť. Jeden klik a nič viac.",
+    download: "Stiahnuť pre Mac",
+    meta: "Zadarmo · macOS 13 Ventura a novší · Apple Silicon aj Intel",
+    featuresTitle: "Malé, ale stačí",
+    f1t: "Jeden klik",
+    f1p: "Ľavý klik na šálku otvorí panel, pravý klik okamžite zapne alebo vypne.",
+    f2t: "Časovač",
+    f2p: "Vypne sa sám po 30 min, 1, 2 alebo 4 hodinách – alebo nikdy.",
+    f3t: "Spustenie pri prihlásení",
+    f3p: "Naštartuje s Macom a pamätá si, či bol zapnutý.",
+    f4t: "Nič navyše",
+    f4p: "Používa vstavaný macOS <i>caffeinate</i>. Žiadne sledovanie, žiadny internet, žiadna ikona v Docku.",
+    installTitle: "Inštalácia",
+    s1t: "Stiahni a rozbaľ",
+    s1p: "Stiahni Kofein.zip a dvakrát naň klikni.",
+    s2t: "Presuň do Aplikácií",
+    s2p: "Potiahni Kofein.app do priečinka Aplikácie a otvor ho.",
+    s3t: "Raz povoľ",
+    s3p: "Kofein nie je podpísaný plateným Apple certifikátom, takže macOS prvé spustenie zablokuje. Otvor Systémové nastavenia → Súkromie a bezpečnosť, zroluj dole a klikni na „Napriek tomu otvoriť“.",
+    terminal: "Radšej Terminál? Toto spraví to isté ako krok 3:",
+    uiLang: "",
+    footer: "Vyrobené na Slovensku –",
+    source: "Zdrojový kód",
+    docTitle: "Kofein – Mac, ktorý nezaspí",
+  };
+
+  const nodes = [...document.querySelectorAll("[data-i18n]")];
+  const en = Object.fromEntries(nodes.map(n => [n.dataset.i18n, n.innerHTML]));
+  en.docTitle = document.title;
+
+  function setLang(lang) {
+    const dict = lang === "sk" ? sk : en;
+    nodes.forEach(n => {
+      const v = dict[n.dataset.i18n];
+      n.innerHTML = v;
+      n.hidden = v === "";
+    });
+    document.title = dict.docTitle;
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".lang button").forEach(b =>
+      b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+  }
+
+  function initialLang() {
+    const q = new URLSearchParams(location.search).get("lang");
+    if (q === "sk" || q === "en") return q;
+    try { const s = localStorage.getItem("lang"); if (s) return s; } catch (e) {}
+    return /^(sk|cs)\b/i.test(navigator.language || "") ? "sk" : "en";
+  }
+
+  document.querySelectorAll(".lang button").forEach(b =>
+    b.addEventListener("click", () => setLang(b.dataset.lang)));
+  setLang(initialLang());
+</script>
+</body>
+</html>
