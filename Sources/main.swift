@@ -219,10 +219,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         iconSubscription = model.$isOn.sink { [weak self] on in self?.updateIcon(on: on) }
 
-        // `Kofein --snapshot out.png` vyrenderuje popup do PNG (na kontrolu vzhľadu) a skončí
+        // `Kofein --snapshot out.png` vyrenderuje popup v zapnutom stave do PNG (screenshot na web) a skončí
         if let i = CommandLine.arguments.firstIndex(of: "--snapshot"), i + 1 < CommandLine.arguments.count {
+            let savedOn = UserDefaults.standard.bool(forKey: "lastStateOn")
+            model.start()
             snapshot(to: CommandLine.arguments[i + 1])
-            NSApp.terminate(nil)
+            UserDefaults.standard.set(savedOn, forKey: "lastStateOn") // uložený stav nechaj, ako bol
+            exit(0) // bez applicationWillTerminate; caffeinate skončí sám vďaka -w
         }
     }
 
@@ -252,7 +255,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func snapshot(to path: String) {
         let view = NSHostingView(rootView: PopoverView(model: model).background(Color(nsColor: .windowBackgroundColor)))
-        view.appearance = NSApp.effectiveAppearance
+        view.appearance = NSAppearance(named: .aqua)
         view.frame = NSRect(origin: .zero, size: view.fittingSize)
         let window = NSWindow(contentRect: view.frame, styleMask: .borderless, backing: .buffered, defer: false)
         window.contentView = view

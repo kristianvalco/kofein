@@ -45,7 +45,7 @@
     font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
   }
   a { color: inherit; }
-  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
   header { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
   .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; }
@@ -61,10 +61,10 @@
   .lang button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
 
   .hero > *, ol.steps li > div, .note { min-width: 0; }
-  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; padding: 48px 0 72px; }
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 64px 0 88px; }
   h1, h2 { font-family: Fraunces, Georgia, serif; font-weight: 700; letter-spacing: -0.01em; line-height: 1.1; }
-  h1 { font-size: clamp(40px, 6vw, 60px); margin: 0 0 18px; }
-  .lead { font-size: 19px; color: var(--muted); margin: 0 0 28px; max-width: 34ch; }
+  h1 { font-size: clamp(40px, 6vw, 72px); margin: 0 0 18px; }
+  .lead { font-size: 20px; color: var(--muted); margin: 0 0 32px; max-width: 40ch; }
   .btn {
     display: inline-flex; align-items: center; gap: 10px;
     background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 600;
@@ -75,7 +75,7 @@
   .btn svg { width: 20px; height: 20px; }
   .meta { margin: 14px 0 0; font-size: 14px; color: var(--muted); }
   .shot {
-    justify-self: center; width: 100%; max-width: 380px; border-radius: 14px;
+    justify-self: center; width: 100%; height: auto; max-width: 480px; border-radius: 14px;
     background: #fff; box-shadow: 0 30px 60px -25px rgba(46, 27, 20, .45), 0 0 0 1px rgba(46, 27, 20, .08);
   }
 
@@ -87,7 +87,7 @@
   .feature h3 { font-size: 16px; margin: 8px 0 6px; }
   .feature p { margin: 0; font-size: 15px; color: var(--muted); }
 
-  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 16px; max-width: 680px; }
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 16px; max-width: 820px; }
   ol.steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 14px; }
   ol.steps li::before {
     content: counter(s); width: 32px; height: 32px; border-radius: 50%;
@@ -95,7 +95,7 @@
     background: var(--surface); border: 1px solid var(--line);
   }
   ol.steps p { margin: 4px 0 0; }
-  .note { margin-top: 28px; max-width: 680px; font-size: 15px; color: var(--muted); }
+  .note { margin-top: 28px; max-width: 820px; font-size: 15px; color: var(--muted); }
   code {
     display: block; margin-top: 8px; padding: 12px 14px; border-radius: 10px; overflow-x: auto;
     background: var(--code-bg); color: var(--text); font: 14px/1.4 ui-monospace, Menlo, monospace; white-space: pre;
@@ -137,7 +137,7 @@
         </a>
         <p class="meta" data-i18n="meta">Free · macOS 13 Ventura or later · Apple Silicon &amp; Intel</p>
       </div>
-      <img class="shot" src="popup.png" width="680" height="546" alt="Kofein menu bar panel">
+      <img class="shot" src="popup.png" width="680" height="554" alt="Kofein menu bar panel">
     </div>
 
     <section>
